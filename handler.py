@@ -416,6 +416,8 @@ def handler(job):
     sampler_node_id = "128"
 
     if sampler_node_id in prompt and prompt[sampler_node_id].get("class_type") == "WanVideoSampler":
+        if "inputs" not in prompt[sampler_node_id]:
+            prompt[sampler_node_id]["inputs"] = {}
         prompt[sampler_node_id]["inputs"]["force_offload"] = force_offload
         logger.info(f"✅ Updated Node {sampler_node_id} (WanVideoSampler): force_offload={force_offload}")
     else:
@@ -423,6 +425,8 @@ def handler(job):
         node_found = False
         for node_id, node_data in prompt.items():
             if node_data.get("class_type") == "WanVideoSampler":
+                if "inputs" not in prompt[node_id]:
+                    prompt[node_id]["inputs"] = {}
                 prompt[node_id]["inputs"]["force_offload"] = force_offload
                 logger.info(f"✅ Dynamically updated Node {node_id} (WanVideoSampler): force_offload={force_offload}")
                 node_found = True
